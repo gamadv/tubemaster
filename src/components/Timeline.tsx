@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export function Timeline(propriedades) {
+export function Timeline({searchValue, ...propriedades}) {
   const playlistNames = Object.keys(propriedades.playlists);
   // Statement
   // Retorno por expressão
@@ -12,14 +12,20 @@ export function Timeline(propriedades) {
           <section>
             <h2>{playlistName}</h2>
             <div>
-              {videos.map((video) => {
-                return (
-                  <a href={video.url}>
-                    <img src={video.thumb} />
-                    <span>{video.title}</span>
-                  </a>
-                );
-              })}
+              {videos
+                .filter((video) => {
+                  const titleNormalized = video.title.toLowerCase();
+                  const searchValueNormalized = searchValue.toLowerCase();
+                  return titleNormalized.includes(searchValueNormalized);
+                })
+                .map((video) => {
+                  return (
+                    <a key={video.url} href={video.url}>
+                      <img src={video.thumb} />
+                      <span>{video.title}</span>
+                    </a>
+                  );
+                })}
             </div>
           </section>
         );
